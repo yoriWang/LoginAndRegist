@@ -21,7 +21,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
-    
     //定义一个登录按钮
     UIButton *loginBtn = [[UIButton alloc] init];
     loginBtn.layer.cornerRadius = 8.0f;
@@ -57,22 +56,29 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    
+    self.navigationController.navigationBar.hidden = YES;
+}
+
 #pragma mark - 跳转到登录界面
 - (void)showLoginViewController:(UIButton *)sender {
     
     LoginViewController *loginVC = [[LoginViewController alloc] init];
-    loginVC.modalPresentationStyle = UIModalPresentationFullScreen;
-    loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:loginVC animated:YES completion:nil];
+//    loginVC.modalPresentationStyle = UIModalPresentationFullScreen;
+//    loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//    [self presentViewController:loginVC animated:YES completion:nil];
+    [self.navigationController pushViewController:loginVC animated:YES];
 }
 
 #pragma mark - 跳转到注册界面
 - (void)showRegistViewController:(UIButton *)sender {
     
     RegisterViewController *registVC = [[RegisterViewController alloc] init];
-    registVC.modalPresentationStyle = UIModalPresentationFullScreen;
-    registVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:registVC animated:YES completion:nil];
+//    registVC.modalPresentationStyle = UIModalPresentationFullScreen;
+//    registVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//    [self presentViewController:registVC animated:YES completion:nil];
+    [self.navigationController pushViewController:registVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
