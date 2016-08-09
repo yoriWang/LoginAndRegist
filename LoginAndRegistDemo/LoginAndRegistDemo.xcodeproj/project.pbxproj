@@ -28,6 +28,8 @@
 		269AAEEF1D55E45800BE6333 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 269AAEED1D55E45800BE6333 /* LaunchScreen.storyboard */; };
 		269AAEFA1D55E45800BE6333 /* LoginAndRegistDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 269AAEF91D55E45800BE6333 /* LoginAndRegistDemoTests.m */; };
 		269AAF051D55E45800BE6333 /* LoginAndRegistDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 269AAF041D55E45800BE6333 /* LoginAndRegistDemoUITests.m */; };
+		269DA8731D59A4F6004C9890 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 269DA8721D59A4F6004C9890 /* MainViewController.m */; };
+		269DA8771D59A9EB004C9890 /* MBProgressHUD+ShowMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 269DA8761D59A9EB004C9890 /* MBProgressHUD+ShowMessage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +98,10 @@
 		269AAF001D55E45800BE6333 /* LoginAndRegistDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginAndRegistDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		269AAF041D55E45800BE6333 /* LoginAndRegistDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginAndRegistDemoUITests.m; sourceTree = "<group>"; };
 		269AAF061D55E45800BE6333 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		269DA8711D59A4F6004C9890 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		269DA8721D59A4F6004C9890 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		269DA8751D59A9EB004C9890 /* MBProgressHUD+ShowMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+ShowMessage.h"; sourceTree = "<group>"; };
+		269DA8761D59A9EB004C9890 /* MBProgressHUD+ShowMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+ShowMessage.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +136,8 @@
 				268D9D611D5839D300865A66 /* LoginViewController.m */,
 				268D9D631D5839F900865A66 /* RegisterViewController.h */,
 				268D9D641D5839F900865A66 /* RegisterViewController.m */,
+				269DA8711D59A4F6004C9890 /* MainViewController.h */,
+				269DA8721D59A4F6004C9890 /* MainViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -207,6 +215,7 @@
 		269AAEDE1D55E45800BE6333 /* LoginAndRegistDemo */ = {
 			isa = PBXGroup;
 			children = (
+				269DA8741D59A606004C9890 /* Utils */,
 				268D9D5A1D58377F00865A66 /* Lib */,
 				268D9D591D5836C200865A66 /* Controller */,
 				269AAEE21D55E45800BE6333 /* AppDelegate.h */,
@@ -247,6 +256,15 @@
 				269AAF061D55E45800BE6333 /* Info.plist */,
 			);
 			path = LoginAndRegistDemoUITests;
+			sourceTree = "<group>";
+		};
+		269DA8741D59A606004C9890 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				269DA8751D59A9EB004C9890 /* MBProgressHUD+ShowMessage.h */,
+				269DA8761D59A9EB004C9890 /* MBProgressHUD+ShowMessage.m */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -386,8 +404,10 @@
 				269AAEE71D55E45800BE6333 /* ViewController.m in Sources */,
 				268D9D851D583DEE00865A66 /* MASViewConstraint.m in Sources */,
 				268D9D831D583DEE00865A66 /* MASLayoutConstraint.m in Sources */,
+				269DA8731D59A4F6004C9890 /* MainViewController.m in Sources */,
 				268D9D651D5839F900865A66 /* RegisterViewController.m in Sources */,
 				269AAEE41D55E45800BE6333 /* AppDelegate.m in Sources */,
+				269DA8771D59A9EB004C9890 /* MBProgressHUD+ShowMessage.m in Sources */,
 				268D9D881D583DEE00865A66 /* View+MASAdditions.m in Sources */,
 				268D9D801D583DEE00865A66 /* MASCompositeConstraint.m in Sources */,
 				268D9D871D583DEE00865A66 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,

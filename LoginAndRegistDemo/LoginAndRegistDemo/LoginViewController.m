@@ -8,8 +8,9 @@
 
 #import "LoginViewController.h"
 #import "RegisterViewController.h"
+#import "MainViewController.h"
 
-@interface LoginViewController ()
+@interface LoginViewController ()<UITextFieldDelegate>
 /**
  *  手机号码输入框
  */
@@ -18,6 +19,10 @@
  *  密码输入框
  */
 @property (nonatomic, strong) UITextField *passwordTextField;
+/**
+ *  记住密码按钮
+ */
+@property (nonatomic, strong) UIButton *checkedBtn;
 
 @end
 
@@ -51,6 +56,7 @@
     [backItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = backItem;
     
+    //定义一个view，用于放置图片
     UIView *phoneView = [[UIView alloc] init];
     phoneView.backgroundColor = RGBColor(240, 92, 65);
     [self.view addSubview:phoneView];
@@ -61,6 +67,7 @@
         make.height.equalTo(60);
     }];
     
+    //定义imageview，用于显示图片
     UIImageView *phoneImageView = [[UIImageView alloc] init];
     phoneImageView.image = [UIImage imageNamed:@"phone.png"];
     [phoneView addSubview:phoneImageView];
@@ -71,6 +78,7 @@
         make.height.equalTo(30);
     }];
     
+    //放置电话号码输入的view
     UIView *phoneInputView = [[UIView alloc] init];
     phoneInputView.backgroundColor = RGBColor(133, 133, 133);
     [self.view addSubview:phoneInputView];
@@ -81,17 +89,20 @@
         make.height.equalTo(phoneView.height);
     }];
     
+    //号码输入框
     _phoneNumberTextField = [[UITextField alloc] init];
     _phoneNumberTextField.placeholder = @"请输入手机号";
     _phoneNumberTextField.backgroundColor = RGBColor(133, 133, 133);
+    _phoneNumberTextField.delegate = self;
     [phoneInputView addSubview:_phoneNumberTextField];
     [_phoneNumberTextField makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(phoneImageView.top);
-        make.left.equalTo(8);
-        make.right.equalTo(-8);
+        make.left.equalTo(5);
+        make.right.equalTo(-5);
         make.height.equalTo(30);
     }];
     
+    //放置密码图片view
     UIView *pwdView = [[UIView alloc] init];
     pwdView.backgroundColor = RGBColor(240, 92, 65);
     [self.view addSubview:pwdView];
@@ -102,6 +113,7 @@
         make.height.equalTo(phoneView.height);
     }];
     
+    //显示密码图片
     UIImageView *pwdImageView = [[UIImageView alloc] init];
     pwdImageView.image = [UIImage imageNamed:@"mima.png"];
     [pwdView addSubview:pwdImageView];
@@ -112,6 +124,7 @@
         make.height.equalTo(phoneImageView.height);
     }];
     
+    //放置密码输入框view
     UIView *pwdInputView = [[UIView alloc] init];
     pwdInputView.backgroundColor = RGBColor(133, 133, 133);
     [self.view addSubview:pwdInputView];
@@ -122,10 +135,12 @@
         make.height.equalTo(phoneInputView.height);
     }];
     
+    //密码输入框
     _passwordTextField = [[UITextField alloc] init];
     _passwordTextField.placeholder = @"请输入密码";
     _passwordTextField.secureTextEntry = YES;
     _passwordTextField.backgroundColor = RGBColor(133, 133, 133);
+    _passwordTextField.delegate = self;
     [pwdInputView addSubview:_passwordTextField];
     [_passwordTextField makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(pwdImageView.top);
@@ -134,8 +149,56 @@
         make.height.equalTo(30);
     }];
     
+    //记住密码按钮
+    _checkedBtn = [[UIButton alloc] init];
+    [_checkedBtn setImage:[UIImage imageNamed:@"unChecked.png"] forState:UIControlStateNormal];
+    [_checkedBtn setImage:[UIImage imageNamed:@"checked.png"] forState:UIControlStateSelected];
+    [_checkedBtn addTarget:self action:@selector(rememberPassword:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_checkedBtn];
+    [_checkedBtn makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(pwdView.bottom).offset(38);
+        make.left.equalTo(pwdView.left);
+        make.width.equalTo(17);
+        make.height.equalTo(17);
+    }];
+    
+    UILabel *autoLoginLabel = [[UILabel alloc] init];
+    autoLoginLabel.text = @"自动登录";
+    autoLoginLabel.font = [UIFont boldSystemFontOfSize:17.0];
+    autoLoginLabel.textColor = RGBColor(240, 92, 65);
+    [self.view addSubview:autoLoginLabel];
+    [autoLoginLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_checkedBtn.top).offset(-2);
+        make.left.equalTo(_checkedBtn.right);
+        make.width.lessThanOrEqualTo(ScreenW/3);
+        make.height.equalTo(20);
+    }];
+    
+    //登录按钮
+    UIButton *loginBtn = [[UIButton alloc] init];
+    [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+    loginBtn.titleLabel.font = [UIFont boldSystemFontOfSize:22.0];
+    loginBtn.layer.cornerRadius = 8.0f;
+    loginBtn.layer.borderWidth = 2;
+    loginBtn.layer.borderColor = RGBColor(240, 92, 65).CGColor;
+    [loginBtn setTitleColor:RGBColor(240, 92, 65) forState:UIControlStateNormal];
+    [loginBtn addTarget:self action:@selector(loginToMainViewController:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:loginBtn];
+    [loginBtn makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(autoLoginLabel.bottom).offset(50);
+        make.left.equalTo(15);
+        make.width.equalTo(ScreenW-30);
+        make.height.equalTo(60);
+    }];
+    
 }
 
+#pragma mark - 登录到主界面
+- (void)loginToMainViewController:(UIButton *)sender {
+    
+}
+
+#pragma mark - 跳转到注册界面
 - (void)showRegistViewController {
     
     RegisterViewController *registVC = [[RegisterViewController alloc] init];
@@ -143,6 +206,16 @@
 //    registVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 //    [self presentViewController:registVC animated:YES completion:nil];
     
+}
+
+#pragma mark - 记住密码选项
+- (void)rememberPassword:(UIButton *)sender {
+    sender.selected = !sender.selected;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.view endEditing:YES];
+    return YES;
 }
 
 - (void)backAction {
