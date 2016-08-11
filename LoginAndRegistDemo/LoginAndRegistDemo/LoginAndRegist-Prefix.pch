@@ -17,7 +17,9 @@
 //define this constant if you want to enable auto-boxing for default syntax
 #define MAS_SHORTHAND_GLOBALS
 #import "Masonry.h"
-#import "MBProgressHUD.h"
+//#import "MBProgressHUD.h"
+#import "MBProgressHUD+ShowMessage.h"
+#import "NSString+YRString.h"
 
 /**
  *  RGB颜色定义
@@ -30,5 +32,9 @@
 #define ScreenW [[UIScreen mainScreen] bounds].size.width
 #define ScreenH [[UIScreen mainScreen] bounds].size.height
 
+/**
+ *  系统版本
+ */
+#define SYS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
 
 #endif /* LoginAndRegist_Prefix_pch */

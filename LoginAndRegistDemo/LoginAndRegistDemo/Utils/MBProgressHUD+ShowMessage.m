@@ -10,11 +10,22 @@
 
 @implementation MBProgressHUD (ShowMessage)
 
-- (void)showHUD:(NSString *)message {
++ (void)showHUD:(UIView *)view meaasge:(NSString *)message {
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    [hud showHUD:message];
 }
 
-- (void)loadHUD:(NSString *)message {
+- (void)showHUD:(NSString *)message {
     
+    self.mode = MBProgressHUDModeText;
+    self.label.text = message;
+    
+    self.offset = CGPointMake(0.f, MBProgressMaxOffset);
+    
+    [self hideAnimated:YES afterDelay:2.f];
 }
+
 @end
+
+

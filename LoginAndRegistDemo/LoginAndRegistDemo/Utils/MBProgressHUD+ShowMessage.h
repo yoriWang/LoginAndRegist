@@ -10,7 +10,9 @@
 
 @interface MBProgressHUD (ShowMessage)
 
-- (void)showHUD:(NSString *)message;
-- (void)loadHUD:(NSString *)message;
++ (void)showHUD:(UIView *)view meaasge:(NSString *)message;
+//- (void)showHUD:(NSString *)message;
+//- (void)loadHUD:(NSString *)message;
+//+ (void)loadHUD:(UIView *)view meaasge:(NSString *)message;
 
 @end

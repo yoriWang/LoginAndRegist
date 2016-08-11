@@ -8,7 +8,13 @@
 
 #import "RegisterViewController.h"
 
-@interface RegisterViewController ()
+@interface RegisterViewController ()<UITextFieldDelegate> {
+    NSString *_randomStr; //随机数
+    
+    NSString *_phoneNum;  //手机号
+    NSString *_verificationCode;//验证码
+    NSString *_password;  //密码
+}
 /**
  *  注册手机号
  */
@@ -81,6 +87,8 @@
     
     _phoneTextField = [[UITextField alloc] init];
     _phoneTextField.placeholder = @"请输入手机号";
+    _phoneTextField.delegate = self;
+    _phoneTextField.keyboardType = UIKeyboardTypeNumberPad;
     _phoneTextField.backgroundColor = RGBColor(133, 133, 133);
     [phoneInputView addSubview:_phoneTextField];
     [_phoneTextField makeConstraints:^(MASConstraintMaker *make) {
@@ -137,6 +145,8 @@
     
     _vCodeTextField = [[UITextField alloc] init];
     _vCodeTextField.placeholder = @"请输入验证码";
+    _vCodeTextField.delegate = self;
+    _vCodeTextField.keyboardType = UIKeyboardTypeNumberPad;
     _vCodeTextField.backgroundColor = RGBColor(133, 133, 133);
     [verificateInputView addSubview:_vCodeTextField];
     [_vCodeTextField makeConstraints:^(MASConstraintMaker *make) {
@@ -179,6 +189,7 @@
     _pwdTextField = [[UITextField alloc] init];
     _pwdTextField.placeholder = @"请输入密码";
     _pwdTextField.secureTextEntry = YES;
+    _pwdTextField.delegate = self;
     _pwdTextField.backgroundColor = RGBColor(133, 133, 133);
     [pwdInputView addSubview:_pwdTextField];
     [_pwdTextField makeConstraints:^(MASConstraintMaker *make) {
@@ -231,6 +242,7 @@
     nextBtn.layer.borderWidth = 2;
     nextBtn.layer.borderColor = RGBColor(240, 92, 65).CGColor;
     [nextBtn setTitleColor:RGBColor(240, 92, 65) forState:UIControlStateNormal];
+    [nextBtn addTarget:self action:@selector(checkedCurrentDataAndSaveData:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextBtn];
     [nextBtn makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(label.bottom).offset(50);
@@ -242,7 +254,15 @@
 
 #pragma mark - 获取验证码
 - (void)getVerificationCode:(UIButton *)sender {
-    
+    int random = (arc4random() % 899999) + 100000;//产生6位随机数
+    _randomStr = [NSString stringWithFormat:@"%i", random];
+    [MBProgressHUD showHUD:self.view meaasge:_randomStr];
+}
+
+#pragma mark - UITextField代理
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.view endEditing:YES];
+    return YES;
 }
 
 #pragma mark - 同意用户协议
@@ -250,10 +270,45 @@
     sender.selected = !sender.selected;
 }
 
+#pragma mark - 注册并检查用户注册数据的完整性
+- (void)checkedCurrentDataAndSaveData:(UIButton *)sender {
+    [self vertifyInput];
+}
+
 #pragma mark - 返回
 - (void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
     
+}
+
+#pragma  mark - 验证用户输入
+-(BOOL)vertifyInput {
+    
+    _phoneNum = self.phoneTextField.text;
+    _verificationCode = self.vCodeTextField.text;
+    _password = self.pwdTextField.text;
+    
+    if ([NSString isEmptyOrNullWithString:_phoneNum]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"请输入手机号"];
+        return NO;
+    }
+    
+    if ([NSString isEmptyOrNullWithString:_verificationCode]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"请输入验证码"];
+        return NO;
+    }
+    
+    if ([NSString isEmptyOrNullWithString:_password]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"请输入密码"];
+        return NO;
+    }
+    
+    if ([NSString isExistSpaceCharacterWithString:_phoneNum]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"含有非法字符，请重新输入"];
+        return NO;
+    }
+    
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {

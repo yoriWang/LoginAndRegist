@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		265110F41D5CABCE0065B8C2 /* NSString+YRString.m in Sources */ = {isa = PBXBuildFile; fileRef = 265110F31D5CABCE0065B8C2 /* NSString+YRString.m */; };
 		268D9D5E1D58377F00865A66 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 268D9D5D1D58377F00865A66 /* MBProgressHUD.m */; };
 		268D9D621D5839D300865A66 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 268D9D611D5839D300865A66 /* LoginViewController.m */; };
 		268D9D651D5839F900865A66 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 268D9D641D5839F900865A66 /* RegisterViewController.m */; };
@@ -50,6 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		265110F21D5CABCE0065B8C2 /* NSString+YRString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+YRString.h"; sourceTree = "<group>"; };
+		265110F31D5CABCE0065B8C2 /* NSString+YRString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+YRString.m"; sourceTree = "<group>"; };
 		268D9D5C1D58377F00865A66 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		268D9D5D1D58377F00865A66 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		268D9D5F1D5837D200865A66 /* LoginAndRegist-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LoginAndRegist-Prefix.pch"; sourceTree = "<group>"; };
@@ -263,6 +266,8 @@
 			children = (
 				269DA8751D59A9EB004C9890 /* MBProgressHUD+ShowMessage.h */,
 				269DA8761D59A9EB004C9890 /* MBProgressHUD+ShowMessage.m */,
+				265110F21D5CABCE0065B8C2 /* NSString+YRString.h */,
+				265110F31D5CABCE0065B8C2 /* NSString+YRString.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -415,6 +420,7 @@
 				269AAEE11D55E45800BE6333 /* main.m in Sources */,
 				268D9D5E1D58377F00865A66 /* MBProgressHUD.m in Sources */,
 				268D9D621D5839D300865A66 /* LoginViewController.m in Sources */,
+				265110F41D5CABCE0065B8C2 /* NSString+YRString.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

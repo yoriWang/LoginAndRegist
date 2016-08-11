@@ -196,6 +196,8 @@
 #pragma mark - 登录到主界面
 - (void)loginToMainViewController:(UIButton *)sender {
     
+    [MBProgressHUD showHUD:self.view meaasge:@"用户名或密码错误"];
+    
 }
 
 #pragma mark - 跳转到注册界面
@@ -213,6 +215,7 @@
     sender.selected = !sender.selected;
 }
 
+#pragma mark -textField代理
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.view endEditing:YES];
     return YES;
