@@ -272,7 +272,30 @@
 
 #pragma mark - 注册并检查用户注册数据的完整性
 - (void)checkedCurrentDataAndSaveData:(UIButton *)sender {
-    [self vertifyInput];
+    if (![self vertifyInput]) return;
+    //注册成功，将数据写入沙盒
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *value = [defaults objectForKey:_phoneNum];
+    if (value) {
+        [MBProgressHUD showHUD:self.view meaasge:@"该用户已存在"];
+        return;
+    }
+    
+    [defaults setObject:_password forKey:_phoneNum];//手机绑定密码，使手机号唯一
+    [defaults synchronize];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.label.text = @"注册成功，请稍后";
+    
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        sleep(1);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+    });
+    
 }
 
 #pragma mark - 返回
@@ -293,8 +316,18 @@
         return NO;
     }
     
+    if (![self validateMobile:_phoneNum]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"请输入正确的手机号"];
+        return NO;
+    }
+    
     if ([NSString isEmptyOrNullWithString:_verificationCode]) {
         [MBProgressHUD showHUD:self.view meaasge:@"请输入验证码"];
+        return NO;
+    }
+    
+    if (![_verificationCode isEqualToString:_randomStr]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"验证码错误"];
         return NO;
     }
     
@@ -303,12 +336,35 @@
         return NO;
     }
     
+    if (_password.length < 6 || _password.length > 20) {
+        [MBProgressHUD showHUD:self.view meaasge:@"密码长度为6~20"];
+        return NO;
+    }
+    
     if ([NSString isExistSpaceCharacterWithString:_phoneNum]) {
         [MBProgressHUD showHUD:self.view meaasge:@"含有非法字符，请重新输入"];
         return NO;
     }
     
+    if ([NSString isExistSpaceCharacterWithString:_password]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"含有非法字符，请重新输入"];
+        return NO;
+    }
+    
+    if (!_checkedBtn.selected) {
+        [MBProgressHUD showHUD:self.view meaasge:@"是否同意用户协议?"];
+        return NO;
+    }
+    
     return YES;
+}
+
+- (BOOL)validateMobile:(NSString *)mobile {//使用正则表达式验证手机号
+    
+    NSString *phoneRegex = @"^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
+    
+    return [phoneTest evaluateWithObject:mobile];
 }
 
 - (void)didReceiveMemoryWarning {

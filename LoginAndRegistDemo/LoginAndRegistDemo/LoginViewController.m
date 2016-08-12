@@ -10,7 +10,10 @@
 #import "RegisterViewController.h"
 #import "MainViewController.h"
 
-@interface LoginViewController ()<UITextFieldDelegate>
+@interface LoginViewController ()<UITextFieldDelegate> {
+    NSString *_phoneNum;//手机号
+    NSString *_password;//密码
+}
 /**
  *  手机号码输入框
  */
@@ -196,8 +199,54 @@
 #pragma mark - 登录到主界面
 - (void)loginToMainViewController:(UIButton *)sender {
     
-    [MBProgressHUD showHUD:self.view meaasge:@"用户名或密码错误"];
+    if (![self vertifyInput]) return;
     
+    //用户信息验证成功，跳转至主界面
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.label.text = @"正在登陆...";
+    //真机运行到这就挂了---待解决
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        sleep(2);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+            MainViewController *mainVC = [[MainViewController alloc] init];
+            mainVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+            [self.navigationController pushViewController:mainVC animated:YES];
+        });
+    });
+    
+}
+
+#pragma mark - 验证用户输入
+-(BOOL)vertifyInput {
+    
+    _phoneNum = self.phoneNumberTextField.text;
+    _password = self.passwordTextField.text;
+    
+    if ([NSString isEmptyOrNullWithString:_phoneNum]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"请输入账号"];
+        return NO;
+    }
+    
+    if ([NSString isEmptyOrNullWithString:_password]) {
+        [MBProgressHUD showHUD:self.view meaasge:@"请输入密码"];
+        return NO;
+    }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *value = [defaults objectForKey:_phoneNum];//取出密码
+    if (!value) {
+        [MBProgressHUD showHUD:self.view meaasge:@"该用户不存在"];
+        return NO;
+    } else {
+        if (![value isEqualToString:_password]) {
+            [MBProgressHUD showHUD:self.view meaasge:@"密码错误"];
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 #pragma mark - 跳转到注册界面

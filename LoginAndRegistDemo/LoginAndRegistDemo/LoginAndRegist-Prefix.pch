@@ -37,4 +37,10 @@
  */
 #define SYS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
 
+/**
+ *  define keys
+ */
+#define YR_PHONE_NUM @"YR_PhoneNum"
+#define YR_PASSWORD @"YR_Password"
+
 #endif /* LoginAndRegist_Prefix_pch */

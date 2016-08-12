@@ -13,10 +13,10 @@
 + (BOOL)isEmptyOrNullWithString:(NSString *)str {
     
     if (str == NULL || str.length == 0) {
-        return NO;
+        return YES;
     }
     
-    return YES;
+    return NO;
 }
 
 + (BOOL)isExistSpaceCharacterWithString:(NSString *)str {
@@ -29,7 +29,12 @@
 }
 
 + (NSString *)removeAllSpaceCharacterWithString:(NSString *)str {
-    return nil;
+    
+    NSString *newString = [str stringByReplacingOccurrencesOfString:@" " withString:@""];//去掉字符串中所有的空格符
+    
+//    NSString *whiteSpace = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];//去掉字符串首尾空格符
+    
+    return newString;
 }
 
 @end
