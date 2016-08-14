@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "MainViewController.h"
 
 @interface AppDelegate ()
 
@@ -22,8 +23,17 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    UINavigationController *mainController = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
-    self.window.rootViewController = mainController;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *value = [defaults objectForKey:YR_PHONE_NUM];
+    
+    if (value) {
+        self.window.rootViewController = [[MainViewController alloc] init];
+    } else {
+        
+        UINavigationController *mainController = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
+        self.window.rootViewController = mainController;
+    }
+    
     [self.window makeKeyAndVisible];
     
     return YES;
@@ -49,6 +59,15 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (void)showWindowHome:(NSString *)windowTyp {
+    if ([windowTyp isEqualToString:@"logout"]) {
+        ViewController *viewControl = [[ViewController alloc] init];
+        viewControl.controlShowType = windowTyp;
+        UINavigationController *mainController = [[UINavigationController alloc] initWithRootViewController:viewControl];
+        self.window.rootViewController = mainController;
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

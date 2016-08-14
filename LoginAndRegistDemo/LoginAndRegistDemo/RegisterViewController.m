@@ -252,6 +252,14 @@
     }];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    _phoneTextField.text = @"";
+    _pwdTextField.text = @"";
+    _vCodeTextField.text = @"";
+    _checkedBtn.selected = NO;
+}
+
 #pragma mark - 获取验证码
 - (void)getVerificationCode:(UIButton *)sender {
     int random = (arc4random() % 899999) + 100000;//产生6位随机数
@@ -285,16 +293,27 @@
     [defaults setObject:_password forKey:_phoneNum];//手机绑定密码，使手机号唯一
     [defaults synchronize];
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.label.text = @"注册成功，请稍后";
-    
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        sleep(1);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
-            [self.navigationController popViewControllerAnimated:YES];
+    if (SYS_VERSION < 8.0) {
+        //提示注册成功
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:HUD];
+        
+        HUD.labelText = @"注册成功，请稍等";
+        [HUD showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
+    } else {
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.label.text = @"注册成功，请稍等";
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+            sleep(1);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+                [self backAction];
+            });
         });
-    });
+    }
+    
     
 }
 
@@ -365,6 +384,19 @@
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     
     return [phoneTest evaluateWithObject:mobile];
+}
+
+//子线程中
+- (void)myTask {
+    // Do something usefull in here instead of sleeping ...
+    sleep(1);
+    // 返回主线程执行
+    [self  performSelectorOnMainThread:@selector(goToMainView) withObject:nil waitUntilDone:FALSE];
+}
+
+-(void) goToMainView {
+    //跳转到登录界面
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

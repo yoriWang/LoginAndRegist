@@ -196,24 +196,49 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    _phoneNumberTextField.text = @"";
+    _passwordTextField.text = @"";
+    _checkedBtn.selected = NO;
+}
+
 #pragma mark - 登录到主界面
 - (void)loginToMainViewController:(UIButton *)sender {
     
     if (![self vertifyInput]) return;
     
-    //用户信息验证成功，跳转至主界面
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.label.text = @"正在登陆...";
-    //真机运行到这就挂了---待解决
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        sleep(2);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
-            MainViewController *mainVC = [[MainViewController alloc] init];
-            mainVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            [self.navigationController pushViewController:mainVC animated:YES];
+    if (SYS_VERSION < 8.0) {
+        //提示注册成功
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:HUD];
+        
+        HUD.labelText = @"正在登陆...";
+        [HUD showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
+    } else {
+        
+        if (_checkedBtn.selected) {
+            NSUserDefaults *defaults = [ NSUserDefaults standardUserDefaults];
+            [defaults setObject:_phoneNum forKey:YR_PHONE_NUM];
+            [defaults setObject:_password forKey:YR_PASSWORD];
+            [defaults synchronize];
+        }
+        
+        //用户信息验证成功，跳转至主界面
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.label.text = @"正在登陆...";
+        //真机运行到这就挂了---待解决
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+            sleep(2);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hideAnimated:YES];
+                MainViewController *mainVC = [[MainViewController alloc] init];
+                mainVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+//                [self.navigationController pushViewController:mainVC animated:YES];
+                [self presentViewController:mainVC animated:YES completion:nil];
+            });
         });
-    });
+    }
     
 }
 
@@ -272,6 +297,22 @@
 
 - (void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+//子线程中
+- (void)myTask {
+    // Do something usefull in here instead of sleeping ...
+    sleep(1);
+    // 返回主线程执行
+    [self  performSelectorOnMainThread:@selector(goToMainView) withObject:nil waitUntilDone:FALSE];
+}
+
+-(void) goToMainView {
+    //跳转到主界面
+    MainViewController *mainVC = [[MainViewController alloc] init];
+    mainVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+//    [self.navigationController pushViewController:mainVC animated:YES];
+    [self presentViewController:mainVC animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
