@@ -301,7 +301,8 @@
         HUD.labelText = @"注册成功，请稍等";
         [HUD showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
     } else {
-        
+
+#warning if SystemVersion < 8.0, there will be crash
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.label.text = @"注册成功，请稍等";
         

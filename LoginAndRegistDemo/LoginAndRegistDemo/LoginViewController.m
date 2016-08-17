@@ -227,6 +227,7 @@
         //用户信息验证成功，跳转至主界面
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.label.text = @"正在登陆...";
+#warning if SystemVersion < 8.0, there will be crash
         //真机运行到这就挂了---待解决
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
             sleep(2);
